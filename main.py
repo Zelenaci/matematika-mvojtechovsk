@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from os.path import basename, splitext
 import re
 from select import select
@@ -23,20 +21,20 @@ class Application(tk.Tk):
         self.lbl = tk.Label(self, text="Matematika")
         self.lbl.grid(row=0)
         self.lblVysl = tk.Label(self, text="")
-        self.lblVysl.grid(row=3,column=1)
+        self.lblVysl.grid(row=3,column=2)
         self.generuj()
         self.entry = Entry(self,width = 6)
-        self.entry.grid(row=2,column =1)
-        #self.btnSummary = Button(self, text=u"Vyhodnocení", width=10, command=self.summary, font="ArialNarrow 10")
-        #self.btnSummary.grid(row=4,column=1)
+        self.entry.grid(row=2,column =3)
         self.bind('<Return>', self.kontrola)
         self.btn = tk.Button(self, text="Konec", command=self.quit)
-        self.btn.grid(row=5,column=1)
+        self.btn.grid(row=5,column=2)
         self.spravne = 0
         self.spatne = 0
-        self.lbl1 = tk.Label(self,textvariable= self.spravne)
+        self.var1 = IntVar()
+        self.var2 = IntVar()
+        self.lbl1 = tk.Label(self, textvariable= self.var1)
         self.lbl1.grid(row=4,column=1)
-        self.lbl2 = tk.Label(self, textvariable=self.spatne)
+        self.lbl2 = tk.Label(self, textvariable= self.var2)
         self.lbl2.grid(row=4,column=2)
              
         
@@ -49,10 +47,13 @@ class Application(tk.Tk):
             if int(self.entry.get()) == self.vysledek:
                 self.lblVysl.config(text="SPRÁVNĚ",background = "#7CFC00")
                 self.spravne +=1
+                self.var1.set(self.spravne)
                
             else:
                 self.lblVysl.config(text="ŠPATNĚ", background = "#FF0000")
                 self.spatne+=1
+                self.var2.set(self.spatne)
+                
             self.generuj()
             self.entry.delete(0, END)
         except ValueError:
@@ -64,7 +65,7 @@ class Application(tk.Tk):
         self.funkce = random.choice([self.plus,self.deleno,self.minus,self.krat])
         self.priklad = self.funkce()
         self.lbl.config(text= self.priklad)
-        self.lbl.grid(row=2,column=0)
+        self.lbl.grid(row=2,column=2)
         
     def plus(self):
         self.cisloA = random.randint(1, 99)
